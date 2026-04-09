@@ -1831,7 +1831,10 @@ MMU::takeOverFrom(BaseMMU *old_mmu)
     Port *old_tbw_port = ommu->getTableWalkerPort();
     Port *new_tbw_port = getTableWalkerPort();
 
-    new_tbw_port->takeOverFrom(old_tbw_port);
+    if (old_tbw_port && new_tbw_port &&
+        old_tbw_port->isConnected() && !new_tbw_port->isConnected()) {
+        new_tbw_port->takeOverFrom(old_tbw_port);
+    }
 
     _attr = ommu->_attr;
 
